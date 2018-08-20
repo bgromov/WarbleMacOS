@@ -8,12 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-//! Project version number for WarbleMacOS.
-FOUNDATION_EXPORT double WarbleMacOSVersionNumber;
-
-//! Project version string for WarbleMacOS.
-FOUNDATION_EXPORT const unsigned char WarbleMacOSVersionString[];
+#import <WarbleMacOS/dllmarker.h>
+#import <WarbleMacOS/gatt_fwd.h>
+#import <WarbleMacOS/gatt.h>
+#import <WarbleMacOS/gattchar_fwd.h>
+#import <WarbleMacOS/gattchar.h>
+#import <WarbleMacOS/lib.h>
+#import <WarbleMacOS/scan_result.h>
+#import <WarbleMacOS/scanner.h>
+#import <WarbleMacOS/types.h>
+#import <WarbleMacOS/warble.h>
 
 // In this header, you should import all the public headers of your framework using statements like #import <WarbleMacOS/PublicHeader.h>
-
-

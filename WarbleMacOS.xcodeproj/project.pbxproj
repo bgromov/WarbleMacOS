@@ -8,12 +8,82 @@
 
 /* Begin PBXBuildFile section */
 		6EF64ED9212999C400DCE0AD /* WarbleMacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64ED7212999C400DCE0AD /* WarbleMacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64EE1212999F500DCE0AD /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF64EE0212999F500DCE0AD /* CoreBluetooth.framework */; };
+		6EF64EEA21299D5700DCE0AD /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64EE621299D5700DCE0AD /* utils.swift */; };
+		6EF64EEB21299D5700DCE0AD /* c_lib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64EE721299D5700DCE0AD /* c_lib.swift */; };
+		6EF64EEC21299D5700DCE0AD /* c_scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64EE821299D5700DCE0AD /* c_scanner.swift */; };
+		6EF64EED21299D5700DCE0AD /* warble_scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64EE921299D5700DCE0AD /* warble_scanner.swift */; };
+		6EF64EF721299DF000DCE0AD /* dllmarker.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64EF221299DEF00DCE0AD /* dllmarker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64EF821299DF000DCE0AD /* lib.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64EF321299DEF00DCE0AD /* lib.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64EF921299DF000DCE0AD /* scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64EF421299DEF00DCE0AD /* scanner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64EFA21299DF000DCE0AD /* scan_result.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64EF521299DEF00DCE0AD /* scan_result.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64EFB21299DF000DCE0AD /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64EF621299DF000DCE0AD /* types.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F042129A02B00DCE0AD /* dllmarker.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64EF221299DEF00DCE0AD /* dllmarker.h */; };
+		6EF64F052129A02B00DCE0AD /* lib.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64EF321299DEF00DCE0AD /* lib.h */; };
+		6EF64F062129A02B00DCE0AD /* scan_result.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64EF521299DEF00DCE0AD /* scan_result.h */; };
+		6EF64F072129A02B00DCE0AD /* scanner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64EF421299DEF00DCE0AD /* scanner.h */; };
+		6EF64F082129A02B00DCE0AD /* types.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64EF621299DF000DCE0AD /* types.h */; };
+		6EF64F0C2129BF2700DCE0AD /* c_gatt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64F0B2129BF2700DCE0AD /* c_gatt.swift */; };
+		6EF64F0F2129C01300DCE0AD /* gattchar_fwd.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64F0D2129C01300DCE0AD /* gattchar_fwd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F102129C01300DCE0AD /* gatt_fwd.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64F0E2129C01300DCE0AD /* gatt_fwd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F122129C03300DCE0AD /* warble.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64F112129C03300DCE0AD /* warble.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F132129C06400DCE0AD /* warble.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64F112129C03300DCE0AD /* warble.h */; };
+		6EF64F142129C06400DCE0AD /* gatt_fwd.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64F0E2129C01300DCE0AD /* gatt_fwd.h */; };
+		6EF64F152129C06400DCE0AD /* gattchar_fwd.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64F0D2129C01300DCE0AD /* gattchar_fwd.h */; };
+		6EF64F182129C49000DCE0AD /* gattchar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64F162129C49000DCE0AD /* gattchar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F192129C49000DCE0AD /* gatt.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EF64F172129C49000DCE0AD /* gatt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF64F1A2129C4DF00DCE0AD /* gatt.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64F172129C49000DCE0AD /* gatt.h */; };
+		6EF64F1B2129C4DF00DCE0AD /* gattchar.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6EF64F162129C49000DCE0AD /* gattchar.h */; };
+		6EF64F1D2129D1A200DCE0AD /* c_gattchar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64F1C2129D1A200DCE0AD /* c_gattchar.swift */; };
+		6EF64F202129D29000DCE0AD /* warble_gatt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64F1F2129D29000DCE0AD /* warble_gatt.swift */; };
+		6EF64F222129D2AF00DCE0AD /* warble_gattchar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF64F212129D2AF00DCE0AD /* warble_gattchar.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6EF64EFC21299EED00DCE0AD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = Headers/warble;
+			dstSubfolderSpec = 1;
+			files = (
+				6EF64F1A2129C4DF00DCE0AD /* gatt.h in CopyFiles */,
+				6EF64F1B2129C4DF00DCE0AD /* gattchar.h in CopyFiles */,
+				6EF64F132129C06400DCE0AD /* warble.h in CopyFiles */,
+				6EF64F142129C06400DCE0AD /* gatt_fwd.h in CopyFiles */,
+				6EF64F152129C06400DCE0AD /* gattchar_fwd.h in CopyFiles */,
+				6EF64F042129A02B00DCE0AD /* dllmarker.h in CopyFiles */,
+				6EF64F052129A02B00DCE0AD /* lib.h in CopyFiles */,
+				6EF64F062129A02B00DCE0AD /* scan_result.h in CopyFiles */,
+				6EF64F072129A02B00DCE0AD /* scanner.h in CopyFiles */,
+				6EF64F082129A02B00DCE0AD /* types.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6EF64ED4212999C400DCE0AD /* WarbleMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WarbleMacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EF64ED7212999C400DCE0AD /* WarbleMacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WarbleMacOS.h; sourceTree = "<group>"; };
 		6EF64ED8212999C400DCE0AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6EF64EE0212999F500DCE0AD /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		6EF64EE621299D5700DCE0AD /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
+		6EF64EE721299D5700DCE0AD /* c_lib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = c_lib.swift; sourceTree = "<group>"; };
+		6EF64EE821299D5700DCE0AD /* c_scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = c_scanner.swift; sourceTree = "<group>"; };
+		6EF64EE921299D5700DCE0AD /* warble_scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = warble_scanner.swift; sourceTree = "<group>"; };
+		6EF64EF221299DEF00DCE0AD /* dllmarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dllmarker.h; sourceTree = "<group>"; };
+		6EF64EF321299DEF00DCE0AD /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lib.h; sourceTree = "<group>"; };
+		6EF64EF421299DEF00DCE0AD /* scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scanner.h; sourceTree = "<group>"; };
+		6EF64EF521299DEF00DCE0AD /* scan_result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scan_result.h; sourceTree = "<group>"; };
+		6EF64EF621299DF000DCE0AD /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		6EF64F0B2129BF2700DCE0AD /* c_gatt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = c_gatt.swift; sourceTree = "<group>"; };
+		6EF64F0D2129C01300DCE0AD /* gattchar_fwd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gattchar_fwd.h; sourceTree = "<group>"; };
+		6EF64F0E2129C01300DCE0AD /* gatt_fwd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gatt_fwd.h; sourceTree = "<group>"; };
+		6EF64F112129C03300DCE0AD /* warble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = warble.h; sourceTree = "<group>"; };
+		6EF64F162129C49000DCE0AD /* gattchar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gattchar.h; sourceTree = "<group>"; };
+		6EF64F172129C49000DCE0AD /* gatt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gatt.h; sourceTree = "<group>"; };
+		6EF64F1C2129D1A200DCE0AD /* c_gattchar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = c_gattchar.swift; sourceTree = "<group>"; };
+		6EF64F1F2129D29000DCE0AD /* warble_gatt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = warble_gatt.swift; sourceTree = "<group>"; };
+		6EF64F212129D2AF00DCE0AD /* warble_gattchar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = warble_gattchar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF64EE1212999F500DCE0AD /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,6 +103,7 @@
 			children = (
 				6EF64ED6212999C400DCE0AD /* WarbleMacOS */,
 				6EF64ED5212999C400DCE0AD /* Products */,
+				6EF64EDF212999F500DCE0AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -46,10 +118,52 @@
 		6EF64ED6212999C400DCE0AD /* WarbleMacOS */ = {
 			isa = PBXGroup;
 			children = (
-				6EF64ED7212999C400DCE0AD /* WarbleMacOS.h */,
+				6EF64F1E2129D24900DCE0AD /* exports */,
 				6EF64ED8212999C400DCE0AD /* Info.plist */,
+				6EF64EE621299D5700DCE0AD /* utils.swift */,
+				6EF64F032129A00500DCE0AD /* warble */,
+				6EF64F1F2129D29000DCE0AD /* warble_gatt.swift */,
+				6EF64F212129D2AF00DCE0AD /* warble_gattchar.swift */,
+				6EF64EE921299D5700DCE0AD /* warble_scanner.swift */,
+				6EF64ED7212999C400DCE0AD /* WarbleMacOS.h */,
 			);
 			path = WarbleMacOS;
+			sourceTree = "<group>";
+		};
+		6EF64EDF212999F500DCE0AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6EF64EE0212999F500DCE0AD /* CoreBluetooth.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6EF64F032129A00500DCE0AD /* warble */ = {
+			isa = PBXGroup;
+			children = (
+				6EF64EF221299DEF00DCE0AD /* dllmarker.h */,
+				6EF64F0E2129C01300DCE0AD /* gatt_fwd.h */,
+				6EF64F172129C49000DCE0AD /* gatt.h */,
+				6EF64F0D2129C01300DCE0AD /* gattchar_fwd.h */,
+				6EF64F162129C49000DCE0AD /* gattchar.h */,
+				6EF64EF321299DEF00DCE0AD /* lib.h */,
+				6EF64EF521299DEF00DCE0AD /* scan_result.h */,
+				6EF64EF421299DEF00DCE0AD /* scanner.h */,
+				6EF64EF621299DF000DCE0AD /* types.h */,
+				6EF64F112129C03300DCE0AD /* warble.h */,
+			);
+			name = warble;
+			sourceTree = "<group>";
+		};
+		6EF64F1E2129D24900DCE0AD /* exports */ = {
+			isa = PBXGroup;
+			children = (
+				6EF64F0B2129BF2700DCE0AD /* c_gatt.swift */,
+				6EF64F1C2129D1A200DCE0AD /* c_gattchar.swift */,
+				6EF64EE721299D5700DCE0AD /* c_lib.swift */,
+				6EF64EE821299D5700DCE0AD /* c_scanner.swift */,
+			);
+			name = exports;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,7 +173,17 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF64F102129C01300DCE0AD /* gatt_fwd.h in Headers */,
+				6EF64F192129C49000DCE0AD /* gatt.h in Headers */,
 				6EF64ED9212999C400DCE0AD /* WarbleMacOS.h in Headers */,
+				6EF64F182129C49000DCE0AD /* gattchar.h in Headers */,
+				6EF64EFB21299DF000DCE0AD /* types.h in Headers */,
+				6EF64EFA21299DF000DCE0AD /* scan_result.h in Headers */,
+				6EF64EF921299DF000DCE0AD /* scanner.h in Headers */,
+				6EF64EF821299DF000DCE0AD /* lib.h in Headers */,
+				6EF64F0F2129C01300DCE0AD /* gattchar_fwd.h in Headers */,
+				6EF64F122129C03300DCE0AD /* warble.h in Headers */,
+				6EF64EF721299DF000DCE0AD /* dllmarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +198,7 @@
 				6EF64ED0212999C400DCE0AD /* Frameworks */,
 				6EF64ED1212999C400DCE0AD /* Headers */,
 				6EF64ED2212999C400DCE0AD /* Resources */,
+				6EF64EFC21299EED00DCE0AD /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -95,6 +220,7 @@
 				TargetAttributes = {
 					6EF64ED3212999C400DCE0AD = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
 					};
 				};
 			};
@@ -130,6 +256,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF64EEC21299D5700DCE0AD /* c_scanner.swift in Sources */,
+				6EF64EEA21299D5700DCE0AD /* utils.swift in Sources */,
+				6EF64F222129D2AF00DCE0AD /* warble_gattchar.swift in Sources */,
+				6EF64F0C2129BF2700DCE0AD /* c_gatt.swift in Sources */,
+				6EF64EEB21299D5700DCE0AD /* c_lib.swift in Sources */,
+				6EF64EED21299D5700DCE0AD /* warble_scanner.swift in Sources */,
+				6EF64F202129D29000DCE0AD /* warble_gatt.swift in Sources */,
+				6EF64F1D2129D1A200DCE0AD /* c_gattchar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,11 +392,15 @@
 		6EF64EDD212999C400DCE0AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEPLOYMENT_LOCATION = YES;
 				DEVELOPMENT_TEAM = H988G4F648;
+				DSTROOT = "~/";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -276,7 +414,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = deadbeef.WarbleMacOS;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -284,11 +423,15 @@
 		6EF64EDE212999C400DCE0AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEPLOYMENT_LOCATION = YES;
 				DEVELOPMENT_TEAM = H988G4F648;
+				DSTROOT = "~/";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -302,7 +445,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = deadbeef.WarbleMacOS;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
