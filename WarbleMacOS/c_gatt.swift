@@ -25,6 +25,7 @@ func warble_gatt_create(_ mac: UnsafePointer<Int8>) -> OpaquePointer? {
 
     return nil
 }
+
 /**
  * Creates a WarbleGatt object
  * @param mac           mac address of the remote device e.g. CB:B7:49:BF:27:33
@@ -51,15 +52,20 @@ func warble_gatt_create_with_options(_ nopts: Int32, _ opts: UnsafePointer<Warbl
 
     return nil
 }
+
 /**
  * Frees the memory allocated for the WarbleGatt object
  * @param obj           Object to delete
  */
 @_cdecl("warble_gatt_delete")
 func warble_gatt_delete(_ obj: OpaquePointer) -> Void {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
 
-    central.delete(gatt: gatt)
+//    if gatt == nil {
+//        return
+//    }
+
+    central.delete(gatt: gatt!)
 }
 
 /**
@@ -70,9 +76,15 @@ func warble_gatt_delete(_ obj: OpaquePointer) -> Void {
  */
 @_cdecl("warble_gatt_connect_async")
 func warble_gatt_connect_async(_ obj: OpaquePointer, _ context: UnsafeMutableRawPointer, _ handler: @escaping FnVoid_VoidP_WarbleGattP_CharP) -> Void {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
-    central.connectAsync(gatt: gatt, context: context, cb: handler)
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+
+//    if gatt == nil {
+//        return
+//    }
+
+    central.connectAsync(gatt: gatt!, context: context, cb: handler)
 }
+
 /**
  * Disconnects from the remot device.  The callback function set in <code>warble_gatt_on_disconnect</code> will be called
  * after all resources are freed
@@ -80,9 +92,15 @@ func warble_gatt_connect_async(_ obj: OpaquePointer, _ context: UnsafeMutableRaw
  */
 @_cdecl("warble_gatt_disconnect")
 func warble_gatt_disconnect(_ obj: OpaquePointer) -> Void {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
-    central.disconnect(gatt: gatt)
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+
+//    if gatt == nil {
+//        return
+//    }
+
+    central.disconnect(gatt: gatt!)
 }
+
 /**
  * Sets a handler to listen for disconnect events
  * @param obj           Calling object
@@ -91,9 +109,13 @@ func warble_gatt_disconnect(_ obj: OpaquePointer) -> Void {
  */
 @_cdecl("warble_gatt_on_disconnect")
 func warble_gatt_on_disconnect(_ obj: OpaquePointer, _ context: UnsafeMutableRawPointer, _ handler: @escaping FnVoid_VoidP_WarbleGattP_Int) -> Void {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
-    central.setOnDisconnect(gatt: gatt, context: context, cb: handler)
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+//    if gatt == nil {
+//        return
+//    }
+    central.setOnDisconnect(gatt: gatt!, context: context, cb: handler)
 }
+
 /**
  * Checks the current connection status
  * @param obj           Calling object
@@ -101,8 +123,10 @@ func warble_gatt_on_disconnect(_ obj: OpaquePointer, _ context: UnsafeMutableRaw
  */
 @_cdecl("warble_gatt_is_connected")
 func warble_gatt_is_connected(_ obj: OpaquePointer) -> Int32 {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
-
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+//    if gatt == nil {
+//        return 0;
+//    }
     return central.isConnected(gatt: gatt) ? 1 : 0
 }
 
@@ -114,10 +138,12 @@ func warble_gatt_is_connected(_ obj: OpaquePointer) -> Int32 {
  */
 @_cdecl("warble_gatt_find_characteristic")
 func warble_gatt_find_characteristic(_ obj: OpaquePointer, uuid: UnsafePointer<Int8>) -> OpaquePointer? {
-    let gatt: WarbleGatt = objectFromOpaquePointer(obj_ptr: obj)
-    gatt.discoverServices()
-    return nil
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+    let gattchar: WarbleGattChar? = gatt?.findCharacteristic(uuidString: String(cString: uuid))
+
+    return opaquePointerFromObject(obj: gattchar)
 }
+
 /**
  * Checks if a GATT service exists with the uuid
  * @param obj           Calling object
@@ -126,5 +152,12 @@ func warble_gatt_find_characteristic(_ obj: OpaquePointer, uuid: UnsafePointer<I
  */
 @_cdecl("warble_gatt_has_service")
 func warble_gatt_has_service(_ obj: OpaquePointer, uuid: UnsafePointer<Int8>) -> Int32 {
-    return 0;
+    let gatt: WarbleGatt? = objectFromOpaquePointer(obj_ptr: obj)
+//    if gatt == nil {
+//        return 0;
+//    }
+
+    let uuidString = String(cString: uuid)
+
+    return gatt!.hasService(uuidString: uuidString) ? 1 : 0;
 }

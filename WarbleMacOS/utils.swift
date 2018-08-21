@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dispatch
 
 class CStr {
     let cstr: UnsafeMutablePointer<Int8>
@@ -15,19 +16,27 @@ class CStr {
         cstr = ptr
     }
     func release() {
-        free(cstr)
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + .milliseconds(500), execute: {
+            free(self.cstr)
+        })
     }
     func get() -> UnsafePointer<Int8> {
         return UnsafePointer(cstr)
     }
 }
 
-func opaquePointerFromObject<T: NSObject>(obj: T) -> OpaquePointer? {
-    let obj_ptr = Unmanaged.passUnretained(obj).toOpaque()
+func opaquePointerFromObject<T: NSObject>(obj: T?) -> OpaquePointer? {
+    if obj == nil {
+        return nil
+    }
+    let obj_ptr = Unmanaged.passUnretained(obj!).toOpaque()
     return OpaquePointer(obj_ptr)
 }
 
-func objectFromOpaquePointer<T: NSObject>(obj_ptr: OpaquePointer) -> T {
-    let obj = Unmanaged<T>.fromOpaque(UnsafeRawPointer(obj_ptr)).takeUnretainedValue()
+func objectFromOpaquePointer<T: NSObject>(obj_ptr: OpaquePointer?) -> T? {
+    if obj_ptr == nil {
+        return nil
+    }
+    let obj = Unmanaged<T>.fromOpaque(UnsafeRawPointer(obj_ptr!)).takeUnretainedValue()
     return obj
 }

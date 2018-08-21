@@ -10,27 +10,30 @@ import Foundation
 import CoreBluetooth
 import Dispatch
 
-//class WarbleCallback<T> {
-//    let handler: T?
-//    let context: UnsafeRawPointer?
-//
-//    init(handler: T?, context: UnsafeRawPointer?) {
-//        handler = handler
-//        context = context
-//    }
-//
-//    func call(
-//}
+class WarbleCallback<T> {
+    let context: UnsafeRawPointer?
+    let handler: T?
+
+    init(context: UnsafeRawPointer?, handler: T?) {
+        self.handler = handler
+        self.context = context
+    }
+}
 
 class WarbleGatt: NSObject, CBPeripheralDelegate {
     var instance: CBPeripheral?
     var mftData: NSData?
     var queue: DispatchQueue?
+    var services_map: [CBUUID: CBService] = [:]
+    var chars_map: [CBUUID : WarbleGattChar] = [:]
 
     var onDisconnect: FnVoid_VoidP_WarbleGattP_Int?
     var onDisconnectContext: UnsafeMutableRawPointer?
     var onConnect: FnVoid_VoidP_WarbleGattP_CharP?
     var onConnectContext: UnsafeMutableRawPointer?
+
+    let services_sem = DispatchSemaphore(value: 0)
+    let chars_sem = DispatchSemaphore(value: 0)
 
     init(_ peripheral: CBPeripheral) {
         super.init()
@@ -39,124 +42,135 @@ class WarbleGatt: NSObject, CBPeripheralDelegate {
         instance!.delegate = self
     }
 
+    func hasService(uuidString: String) -> Bool {
+        if services_map.isEmpty {
+            discoverServices()
+        }
+        return services_map[CBUUID(string: uuidString)] == nil ? false : true
+    }
+
     func discoverServices() {
-        instance?.discoverServices(nil)
-        let group = DispatchGroup()
-        group.enter()
+        DispatchQueue.global().async {
+//            print("s-")
+            self.instance?.discoverServices(nil)
+        }
+        services_sem.wait()
 
-//        DispatchQueue.global().async {
-//            while (self.instance?.services == nil) {
-//                RunLoop.main.run(mode: .defaultRunLoopMode, before: .distantPast)
-//                RunLoop.current.run(mode: .defaultRunLoopMode, before: .distantPast)
-//                sleep(1)
-//                print("run")
-//            }
-            print("done")
-            group.leave()
-//        }
-        print("waiting...")
-        group.wait()
-        print("complete")
-    }
-
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        for s in peripheral.services! {
-            print(s)
+        for s in instance!.services! {
+            services_map[s.uuid] = s
         }
     }
-}
 
-class WarbleCentral: NSObject, CBCentralManagerDelegate {
-    var cman: CBCentralManager
-    weak var delegate:CBCentralManagerDelegate?
-    var devices: [CBPeripheral : WarbleGatt] = [:]
-    weak var centralQueue: DispatchQueue?
-
-    static let instance = WarbleCentral()
-
-    var mac: String?
-
-    private override init() {
-        centralQueue = DispatchQueue.global()
-        cman = CBCentralManager(delegate: nil, queue: centralQueue)
-        super.init()
-        cman.delegate = self
-    }
-
-    func create(mac: String) -> WarbleGatt? {
-        var peripherals = cman.retrievePeripherals(withIdentifiers: [UUID(uuidString: mac)!])
-        if peripherals.isEmpty {
-            return nil
-        }
-        let gatt = WarbleGatt(peripherals[0])
-        devices[gatt.instance!] = gatt
-        return gatt
-    }
-
-    func delete(gatt: WarbleGatt) {
-        devices.removeValue(forKey: gatt.instance!)
-    }
-
-    func connectAsync(gatt: WarbleGatt, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattP_CharP) {
-        gatt.onConnectContext = context
-        gatt.onConnect = cb
-
-        cman.connect(gatt.instance!)
-    }
-
-    func isConnected(gatt: WarbleGatt?) -> Bool {
-        if gatt != nil {
-            let p = gatt!.instance
-            if p != nil {
-                if devices[p!] != nil {
-                    return p!.state == .connected
+    func discoverCharacteristics() {
+        if chars_map.isEmpty {
+            if services_map.isEmpty {
+                discoverServices()
+            }
+            for s in services_map.values {
+                DispatchQueue.global().async {
+//                    print("c-")
+                    self.instance!.discoverCharacteristics(nil, for: s)
                 }
+                chars_sem.wait()
             }
         }
-
-        return false
     }
 
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        let gatt = devices[peripheral]!
-        let obj_ptr = Unmanaged.passRetained(gatt).toOpaque()
-        gatt.onConnect?(gatt.onConnectContext, OpaquePointer(obj_ptr), nil)
-    }
-
-    func setOnDisconnect(gatt: WarbleGatt, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattP_Int) {
-        gatt.onDisconnectContext = context
-        gatt.onDisconnect = cb
-    }
-
-    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        let gatt = devices[peripheral]!
-
-        let obj_ptr = Unmanaged.passRetained(gatt).toOpaque()
-        gatt.onDisconnect?(gatt.onDisconnectContext, OpaquePointer(obj_ptr), 0)
-    }
-
-    func disconnect(gatt: WarbleGatt) {
-        cman.cancelPeripheralConnection(gatt.instance!)
-    }
-
-    func startScan() {
-        while cman.state != .poweredOn {
-            RunLoop.main.run(mode: .defaultRunLoopMode, before: .distantPast)
+    func findCharacteristic(uuidString: String) -> WarbleGattChar? {
+        if chars_map.isEmpty {
+            discoverCharacteristics()
         }
+        return chars_map[CBUUID(string: uuidString)]
+    }
 
-        if cman.state == .poweredOn {
-            cman.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+    func writeChar(char: WarbleGattChar, value: Data, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) {
+        char.onWrite = cb
+        char.onWriteContext = context
+
+        DispatchQueue.global().async {
+            self.instance?.writeValue(value, for: char.instance, type: .withResponse)
         }
     }
 
-    func stopScan() {
-        if cman.state == .poweredOn && cman.isScanning {
-            cman.stopScan()
+    func writeCharNoResponse(char: WarbleGattChar, value: Data, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) {
+        char.onWrite = cb
+        char.onWriteContext = context
+
+        DispatchQueue.global().async {
+            self.instance?.writeValue(value, for: char.instance, type: .withoutResponse)
         }
     }
 
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        //        print("newState:", central.state.rawValue)
+    func readChar(char: WarbleGattChar, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_UbyteP_Ubyte_CharP) {
+        char.onRead = cb
+        char.onReadContext = context
+
+        DispatchQueue.global().async {
+            self.instance?.readValue(for: char.instance)
+        }
     }
 
+
+//---------- Delegate methods -----------
+
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+//        for s in peripheral.services! {
+//            print(s)
+//        }
+        services_sem.signal()
+    }
+
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        for c in service.characteristics! {
+            chars_map[c.uuid] = WarbleGattChar(peripheral: self, service: service, char: c)
+//            print(c)
+        }
+        chars_sem.signal()
+    }
+
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        var cstr: CStr?
+        defer {
+            if cstr != nil {
+                cstr!.release()
+            }
+        }
+        if error != nil {
+            cstr = CStr(error!.localizedDescription)
+        }
+        DispatchQueue.global().async {
+            let gattchar = self.chars_map[characteristic.uuid]
+            gattchar?.onWrite?(gattchar?.onWriteContext, opaquePointerFromObject(obj: gattchar), cstr?.get())
+        }
+    }
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        var cstr: CStr?
+        defer {
+            if cstr != nil {
+                cstr!.release()
+            }
+        }
+        if error != nil {
+            cstr = CStr(error!.localizedDescription)
+        }
+        DispatchQueue.global().async {
+            let gattchar = self.chars_map[characteristic.uuid]
+            let data = characteristic.value!
+
+            data.withUnsafeBytes({(ptr: UnsafePointer<UInt8>) -> Void in
+                gattchar?.onRead?(gattchar?.onReadContext,
+                                  opaquePointerFromObject(obj: gattchar),
+                                  ptr,
+                                  UInt8(data.count),
+                                  cstr?.get())
+                if characteristic.isNotifying {
+                    gattchar?.onNotify?(gattchar?.onNotifyContext,
+                                      opaquePointerFromObject(obj: gattchar),
+                                      ptr,
+                                      UInt8(data.count))
+                }
+            })
+        }
+    }
 }
