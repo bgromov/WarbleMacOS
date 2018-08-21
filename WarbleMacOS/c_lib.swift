@@ -26,6 +26,7 @@ func warble_lib_config() -> UnsafePointer<Int8> {
     return cstr.get()
 }
 
+@_cdecl("warble_lib_init")
 func warble_lib_init(_ nopts: Int32, _ opts: UnsafePointer<WarbleOption>) {
 
 }
