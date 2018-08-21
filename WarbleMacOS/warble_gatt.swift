@@ -110,6 +110,32 @@ class WarbleGatt: NSObject, CBPeripheralDelegate {
         }
     }
 
+    func enableNotifications(char: WarbleGattChar, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) {
+        char.onNotifyEn = cb
+        char.onNotifyEnContext = context
+
+        char.isNotifyEnRequested = true
+
+        DispatchQueue.global().async {
+            self.instance?.setNotifyValue(true, for: char.instance)
+        }
+    }
+
+    func disableNotifications(char: WarbleGattChar, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) {
+        char.onNotifyDis = cb
+        char.onNotifyDisContext = context
+
+        char.isNotifyDisRequested = true
+
+        DispatchQueue.global().async {
+            self.instance?.setNotifyValue(false, for: char.instance)
+        }
+    }
+
+    func setNotificationsCallback(char: WarbleGattChar, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_UbyteP_Ubyte) {
+        char.onNotify = cb
+        char.onNotifyContext = context
+    }
 
 //---------- Delegate methods -----------
 
@@ -173,4 +199,35 @@ class WarbleGatt: NSObject, CBPeripheralDelegate {
             })
         }
     }
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        var cstr: CStr?
+        defer {
+            if cstr != nil {
+                cstr!.release()
+            }
+        }
+        if error != nil {
+            cstr = CStr(error!.localizedDescription)
+        }
+        DispatchQueue.global().async {
+            let gattchar = self.chars_map[characteristic.uuid]
+
+            if gattchar!.isNotifyEnRequested {
+                gattchar?.onNotifyEn?(gattchar?.onNotifyEnContext,
+                                      opaquePointerFromObject(obj: gattchar),
+                                      cstr?.get()
+                )
+                gattchar!.isNotifyEnRequested = false
+            }
+            if gattchar!.isNotifyDisRequested {
+                gattchar?.onNotifyDis?(gattchar?.onNotifyEnContext,
+                                      opaquePointerFromObject(obj: gattchar),
+                                      cstr?.get()
+                )
+                gattchar!.isNotifyDisRequested = false
+            }
+        }
+    }
+
 }

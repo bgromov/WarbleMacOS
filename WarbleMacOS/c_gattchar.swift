@@ -65,7 +65,9 @@ func warble_gattchar_read_async(_ obj: OpaquePointer, _ context: UnsafeMutableRa
  */
 @_cdecl("warble_gattchar_enable_notifications_async")
 func warble_gattchar_enable_notifications_async(_ obj: OpaquePointer, _ context: UnsafeMutableRawPointer, _ handler: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) -> Void {
+    let gattchar: WarbleGattChar? = objectFromOpaquePointer(obj_ptr: obj)
 
+    gattchar!.peripheral.enableNotifications(char: gattchar!, context: context, cb: handler)
 }
 
 /**
@@ -76,7 +78,9 @@ func warble_gattchar_enable_notifications_async(_ obj: OpaquePointer, _ context:
  */
 @_cdecl("warble_gattchar_disable_notifications_async")
 func warble_gattchar_disable_notifications_async(_ obj: OpaquePointer, _ context: UnsafeMutableRawPointer, _ handler: @escaping FnVoid_VoidP_WarbleGattCharP_CharP) -> Void {
+    let gattchar: WarbleGattChar? = objectFromOpaquePointer(obj_ptr: obj)
 
+    gattchar!.peripheral.disableNotifications(char: gattchar!, context: context, cb: handler)
 }
 
 /**
@@ -87,7 +91,9 @@ func warble_gattchar_disable_notifications_async(_ obj: OpaquePointer, _ context
  */
 @_cdecl("warble_gattchar_on_notification_received")
 func warble_gattchar_on_notification_received(_ obj: OpaquePointer, _ context: UnsafeMutableRawPointer, _ handler: @escaping FnVoid_VoidP_WarbleGattCharP_UbyteP_Ubyte) -> Void {
+    let gattchar: WarbleGattChar? = objectFromOpaquePointer(obj_ptr: obj)
 
+    gattchar!.peripheral.setNotificationsCallback(char: gattchar!, context: context, cb: handler)
 }
 
 /**

@@ -25,6 +25,9 @@ class WarbleGattChar: NSObject {
     var onNotifyDis: FnVoid_VoidP_WarbleGattCharP_CharP?
     var onNotifyDisContext: UnsafeMutableRawPointer?
 
+    var isNotifyEnRequested: Bool = false
+    var isNotifyDisRequested: Bool = false
+
 
     init(peripheral: WarbleGatt, service: CBService, char: CBCharacteristic) {
         self.peripheral = peripheral
