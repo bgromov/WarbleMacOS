@@ -96,9 +96,8 @@ class WarbleGatt: NSObject, CBPeripheralDelegate {
         char.onWrite = cb
         char.onWriteContext = context
 
-        DispatchQueue.global().async {
-            self.instance?.writeValue(value, for: char.instance, type: .withoutResponse)
-        }
+        instance?.writeValue(value, for: char.instance, type: .withoutResponse)
+        char.onWrite?(char.onWriteContext, opaquePointerFromObject(obj: char), nil)
     }
 
     func readChar(char: WarbleGattChar, context: UnsafeMutableRawPointer, cb: @escaping FnVoid_VoidP_WarbleGattCharP_UbyteP_Ubyte_CharP) {
